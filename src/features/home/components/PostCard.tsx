@@ -2,7 +2,7 @@ import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Edit3, Heart, MessageCircleMore, Trash2 } from "lucide-react";
 
-const PostCard = () => {
+export const PostCard = () => {
   return (
     <div>
       <div className="flex gap-2">
@@ -50,5 +50,3 @@ const PostCard = () => {
     </div>
   );
 };
-
-export default PostCard;

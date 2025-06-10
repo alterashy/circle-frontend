@@ -1,11 +1,9 @@
-import PostForm from "./PostForm";
+import { PostForm } from "./PostForm";
 
-const PostReplyForm = () => {
+export const PostReplyForm = () => {
   return (
     <div>
       <PostForm />
     </div>
   );
 };
-
-export default PostReplyForm;

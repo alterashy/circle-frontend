@@ -2,7 +2,7 @@ import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Edit3, Heart, Trash2 } from "lucide-react";
 
-const PostRelpyCard = () => {
+export const PostRelpyCard = () => {
   return (
     <div>
       <div className="flex gap-2">
@@ -46,4 +46,3 @@ const PostRelpyCard = () => {
     </div>
   );
 };
-export default PostRelpyCard;

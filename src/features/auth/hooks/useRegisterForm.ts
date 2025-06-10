@@ -5,7 +5,10 @@ import { useNavigate } from "@tanstack/react-router";
 import { isAxiosError } from "axios";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { registerSchema, type RegisterSchemaDTO } from "../schemas/auth.schemas";
+import {
+  registerSchema,
+  type RegisterSchemaDTO,
+} from "../schemas/auth.schemas";
 
 interface RegisterFormResponse {
   message: string;
@@ -18,7 +21,7 @@ interface RegisterFormResponse {
   };
 }
 
-const useRegisterForm = () => {
+export const useRegisterForm = () => {
   const registerForm = useForm<RegisterSchemaDTO>({
     mode: "onChange",
     resolver: zodResolver(registerSchema),
@@ -26,10 +29,17 @@ const useRegisterForm = () => {
 
   const navigate = useNavigate();
 
-  const { isPending, mutateAsync } = useMutation<RegisterFormResponse, Error, RegisterSchemaDTO>({
+  const { isPending, mutateAsync } = useMutation<
+    RegisterFormResponse,
+    Error,
+    RegisterSchemaDTO
+  >({
     mutationKey: ["register"],
     mutationFn: async (data: RegisterSchemaDTO) => {
-      const response = await api.post<RegisterFormResponse>("/auth/register", data);
+      const response = await api.post<RegisterFormResponse>(
+        "/auth/register",
+        data
+      );
       return response.data;
     },
     onError: (error) => {
@@ -62,5 +72,3 @@ const useRegisterForm = () => {
     onSubmit,
   };
 };
-
-export default useRegisterForm;

@@ -1,13 +1,19 @@
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
 import { Link } from "@tanstack/react-router";
 import { type Control, type FieldPath } from "react-hook-form";
-import useLoginForm from "../hooks/useLoginForm";
+import { useLoginForm } from "../hooks/useLoginForm";
 import { type LoginSchemaDTO } from "../schemas/auth.schemas";
 
-const LoginForm = () => {
+export const LoginForm = () => {
   const { loginForm, isPending, onSubmit } = useLoginForm();
 
   interface LoginFormFieldProps {
@@ -31,7 +37,11 @@ const LoginForm = () => {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder={placeholder} type={inputType || "text"} {...field} />
+                <Input
+                  placeholder={placeholder}
+                  type={inputType || "text"}
+                  {...field}
+                />
               </FormControl>
               <FormMessage className="mt-1" />
             </FormItem>
@@ -77,5 +87,3 @@ const LoginForm = () => {
     </div>
   );
 };
-
-export default LoginForm;
