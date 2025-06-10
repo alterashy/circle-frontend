@@ -2,7 +2,7 @@ import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { UserRoundCheck, UserRoundPlus } from "lucide-react";
 
-const FollowTab = () => {
+export const FollowTab = () => {
   return (
     <Tabs defaultValue="followers" className="w-full">
       <TabsList className="grid w-full grid-cols-2">
@@ -29,5 +29,3 @@ const FollowTab = () => {
     </Tabs>
   );
 };
-
-export default FollowTab;

@@ -1,7 +1,7 @@
 import { Input } from "@/components/ui/input";
 import { UserSearch } from "lucide-react";
 
-const SearchInput = () => {
+export const SearchInput = () => {
   return (
     <div className="flex flex-row gap-4 items-center">
       <Input type="search" placeholder="Find new friends.." />
@@ -9,5 +9,3 @@ const SearchInput = () => {
     </div>
   );
 };
-
-export default SearchInput;

@@ -2,9 +2,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { UserRoundPen } from "lucide-react";
-import ProfileEditDialog from "./ProfileEditDialog";
+import { ProfileEditDialog } from "./ProfileEditDialog";
 
-const ProfileCard = () => {
+export const ProfileCard = () => {
   return (
     <div>
       <div className="bg-secondary - rounded-md p-4 w-full relative">
@@ -51,5 +51,3 @@ const ProfileCard = () => {
     </div>
   );
 };
-
-export default ProfileCard;

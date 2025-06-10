@@ -4,9 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { useAuthStore } from "@/stores/auth.store";
 import { UserRoundPen } from "lucide-react";
-import ProfileEditDialog from "./ProfileEditDialog";
+import { ProfileEditDialog } from "./ProfileEditDialog";
 
-const ProfileUser = () => {
+export const ProfileUser = () => {
   const {
     username,
     profile: { fullName, bio, bannerUrl, avatarUrl },
@@ -65,5 +65,3 @@ const ProfileUser = () => {
     </div>
   );
 };
-
-export default ProfileUser;

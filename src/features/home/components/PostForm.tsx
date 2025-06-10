@@ -6,7 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { ImagePlus, Send, XSquareIcon } from "lucide-react";
 import React, { useRef, useState } from "react";
 
-const PostForm = () => {
+export const PostForm = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [previewURL, setPreviewURL] = useState<string | null>(null);
 
@@ -76,5 +76,3 @@ const PostForm = () => {
     </div>
   );
 };
-
-export default PostForm;

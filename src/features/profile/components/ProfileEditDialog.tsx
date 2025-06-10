@@ -12,7 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Camera } from "lucide-react";
 import { useRef, useState } from "react";
 
-const ProfileEditDialog = () => {
+export const ProfileEditDialog = () => {
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [bannerUrl, setBannerUrl] = useState<string | null>(null);
   const avatarInputRef = useRef<HTMLInputElement>(null);
@@ -111,5 +111,3 @@ const ProfileEditDialog = () => {
     </DialogContent>
   );
 };
-
-export default ProfileEditDialog;

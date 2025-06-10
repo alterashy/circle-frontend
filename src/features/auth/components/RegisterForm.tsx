@@ -1,12 +1,18 @@
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
 import { type Control, type FieldPath } from "react-hook-form";
-import useRegisterForm from "../hooks/useRegisterForm";
+import { useRegisterForm } from "../hooks/useRegisterForm";
 import { type RegisterSchemaDTO } from "../schemas/auth.schemas";
 
-const RegisterForm = () => {
+export const RegisterForm = () => {
   const { registerForm, isPending, onSubmit } = useRegisterForm();
 
   interface RegisterFormFieldProps {
@@ -30,7 +36,11 @@ const RegisterForm = () => {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder={placeholder} type={inputType || "text"} {...field} />
+                <Input
+                  placeholder={placeholder}
+                  type={inputType || "text"}
+                  {...field}
+                />
               </FormControl>
               <FormMessage className="mt-1" />
             </FormItem>
@@ -43,7 +53,10 @@ const RegisterForm = () => {
   return (
     <div>
       <Form {...registerForm}>
-        <form onSubmit={registerForm.handleSubmit(onSubmit)} className="space-y-4">
+        <form
+          onSubmit={registerForm.handleSubmit(onSubmit)}
+          className="space-y-4"
+        >
           <RegisterFormField
             name="fullName"
             placeholder="full name"
@@ -83,5 +96,3 @@ const RegisterForm = () => {
     </div>
   );
 };
-
-export default RegisterForm;

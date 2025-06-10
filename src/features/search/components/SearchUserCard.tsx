@@ -1,7 +1,7 @@
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 
-const SearchUserCard = () => {
+export const SearchUserCard = () => {
   return (
     <div>
       <div className="flex justify-between items-center mb-4">
@@ -21,5 +21,3 @@ const SearchUserCard = () => {
     </div>
   );
 };
-
-export default SearchUserCard;
