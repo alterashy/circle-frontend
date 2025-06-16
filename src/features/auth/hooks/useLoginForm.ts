@@ -1,4 +1,8 @@
+import { ProfileEntity } from "@/entities/profile.entity";
+import { UserEntity } from "@/entities/user.entity";
 import { api } from "@/lib/api";
+import { loginSchema, LoginSchemaDTO } from "@/schemas/auth.schema";
+import { useAuthStore } from "@/stores/auth.store";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
@@ -6,10 +10,6 @@ import { isAxiosError } from "axios";
 import Cookies from "js-cookie";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { loginSchema, type LoginSchemaDTO } from "../schemas/auth.schemas";
-import { useAuthStore } from "@/stores/auth.store";
-import { UserEntity } from "@/entities/user.entity";
-import { ProfileEntity } from "@/entities/profile.entity";
 
 type UserProfile = UserEntity & {
   profile: ProfileEntity;

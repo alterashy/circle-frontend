@@ -1,7 +1,7 @@
-import LeftBar from "@/components/common/LeftBar";
-import RightBar from "@/components/common/RightBar";
+import { LeftBar } from "@/components/common/LeftBar";
+import { RightBar } from "@/components/common/RightBar";
 import { api } from "@/lib/api";
-import HomePage from "@/pages/dashboard/HomePage";
+import { HomePage } from "@/pages/dashboard/HomePage";
 import { useAuthStore } from "@/stores/auth.store";
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, Navigate } from "@tanstack/react-router";

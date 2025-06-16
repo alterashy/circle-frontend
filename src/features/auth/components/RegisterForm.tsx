@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
 import { type Control, type FieldPath } from "react-hook-form";
 import { useRegisterForm } from "../hooks/useRegisterForm";
-import { type RegisterSchemaDTO } from "../schemas/auth.schemas";
+import { RegisterSchemaDTO } from "@/schemas/auth.schema";
 
 export const RegisterForm = () => {
   const { registerForm, isPending, onSubmit } = useRegisterForm();

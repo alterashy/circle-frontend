@@ -11,7 +11,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { Link } from "@tanstack/react-router";
 import { type Control, type FieldPath } from "react-hook-form";
 import { useLoginForm } from "../hooks/useLoginForm";
-import { type LoginSchemaDTO } from "../schemas/auth.schemas";
+import { LoginSchemaDTO } from "@/schemas/auth.schema";
 
 export const LoginForm = () => {
   const { loginForm, isPending, onSubmit } = useLoginForm();

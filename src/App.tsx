@@ -15,7 +15,8 @@ declare module "@tanstack/react-router" {
 }
 
 const theme = localStorage.getItem("vite-ui-theme");
-const currentTheme = theme === "light" || theme === "dark" || theme === "colored" ? theme : "dark";
+const currentTheme =
+  theme === "light" || theme === "dark" || theme === "colored" ? theme : "dark";
 
 function App() {
   return (

@@ -1,7 +1,7 @@
-import PostDetailPage from "@/pages/dashboard/PostDetailPage";
+import { PostDetailPage } from "@/pages/dashboard/PostDetailPage";
 import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/(dashboard)/$postId")({
+export const Route = createFileRoute("/(dashboard)/post/$postId")({
   component: RouteComponent,
 });
 

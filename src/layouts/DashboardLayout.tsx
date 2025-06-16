@@ -1,12 +1,12 @@
-import LeftBar from "@/components/common/LeftBar";
-import RightBar from "@/components/common/RightBar";
+import { LeftBar } from "@/components/common/LeftBar";
+import { RightBar } from "@/components/common/RightBar";
 import { api } from "@/lib/api";
 import { useAuthStore } from "@/stores/auth.store";
 import { useQuery } from "@tanstack/react-query";
 import { Navigate, Outlet } from "@tanstack/react-router";
 import Cookies from "js-cookie";
 
-const DashboardLayout = () => {
+export const DashboardLayout = () => {
   const {
     user: { username },
     setUser,
@@ -56,5 +56,3 @@ const DashboardLayout = () => {
     );
   }
 };
-
-export default DashboardLayout;

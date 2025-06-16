@@ -1,7 +1,7 @@
 import { Separator } from "@/components/ui/separator";
-import ProfileUser from "@/features/profile/components/ProfileUser";
+import { ProfileUser } from "@/features/profile/components/ProfileUser";
 
-const ProfilePage = () => {
+export const ProfilePage = () => {
   return (
     <div>
       <ProfileUser />
@@ -9,5 +9,3 @@ const ProfilePage = () => {
     </div>
   );
 };
-
-export default ProfilePage;

@@ -1,4 +1,4 @@
-import PostForm from "@/features/home/components/PostForm";
+import { PostForm } from "@/features/home/components/PostForm";
 import { useAuthStore } from "@/stores/auth.store";
 import { Link, useNavigate } from "@tanstack/react-router";
 import Cookies from "js-cookie";
@@ -10,9 +10,16 @@ import {
   UserRoundSearch,
   UsersRound,
 } from "lucide-react";
+import { useState } from "react";
 import { Button } from "../ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
-import { ModeToggle } from "./ModeToggle";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../ui/dialog";
+import { ThemeToggle } from "./ThemeToggle";
 
 const activeProps = {
   style: {
@@ -20,8 +27,7 @@ const activeProps = {
     color: "#00BC7D",
   },
 };
-
-const LeftBar = () => {
+export const LeftBar = () => {
   const { logout } = useAuthStore();
   const navigate = useNavigate();
 
@@ -30,6 +36,8 @@ const LeftBar = () => {
     Cookies.remove("token");
     navigate({ to: "/login" });
   };
+
+  const [open, setOpen] = useState(false);
 
   return (
     <div className="flex flex-col justify-between w-full h-full">
@@ -72,40 +80,31 @@ const LeftBar = () => {
           </Link>
         </div>
         <div>
-          <Dialog>
-            <DialogTrigger className="w-full">
-              <Button className="w-full">
+          <Dialog open={open} onOpenChange={setOpen}>
+            <DialogTrigger className="w-full" asChild>
+              <Button className="w-full text-accent-foreground">
                 <SquarePlus />
                 Create Post
               </Button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent className="sm:max-w-lg w-full">
               <DialogHeader>
                 <DialogTitle className="mb-2">Create Post</DialogTitle>
                 <div className="w-full">
-                  <PostForm />
+                  <PostForm onSuccess={() => setOpen(false)} />
                 </div>
               </DialogHeader>
             </DialogContent>
           </Dialog>
         </div>
       </div>
-      <div className="flex gap-4">
-        <Button
-          type="submit"
-          onClick={handleLogout}
-          variant={"outline"}
-          className=" cursor-pointer"
-        >
+      <div className="flex justify-between w-full">
+        <ThemeToggle />
+        <Button type="submit" onClick={handleLogout} variant={"outline"}>
           <LogOut />
           Logout
         </Button>
-        <div>
-          <ModeToggle />
-        </div>
       </div>
     </div>
   );
 };
-
-export default LeftBar;

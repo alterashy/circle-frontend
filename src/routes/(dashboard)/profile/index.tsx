@@ -1,4 +1,4 @@
-import ProfilePage from "@/pages/dashboard/ProfilePage";
+import { ProfilePage } from "@/pages/dashboard/ProfilePage";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(dashboard)/profile/")({
