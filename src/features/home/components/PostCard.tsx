@@ -42,10 +42,7 @@ export const PostCard = (thread: Thread) => {
   const navigate = useNavigate();
   const onClickPost = () => navigate({ to: `/post/${thread.id}` });
 
-  const [editedPost, setEditedPost] = useState({
-    content: thread.content,
-    imageUrl: thread.images,
-  });
+  const [editedPost, setEditedPost] = useState(thread);
 
   const { isPendingLike, handleLike, isPendingUnlike, handleUnlike } =
     useLike();
@@ -113,8 +110,8 @@ export const PostCard = (thread: Thread) => {
               </span>
             </div>
           </div>
-          {isEditing ? (
-            <form onSubmit={handleSubmit(onSubmitPost)}>
+          <form onSubmit={handleSubmit(onSubmitPost)}>
+            {isEditing ? (
               <div className="flex flex-col gap-2">
                 <div>
                   <div className="flex flex-row gap-4">
@@ -134,7 +131,6 @@ export const PostCard = (thread: Thread) => {
                       id="picture"
                       type="file"
                       accept="image/*"
-                      itemRef={editedPost.imageUrl}
                       ref={(e) => {
                         registerImageRef(e);
                         inputRef.current = e;
@@ -155,7 +151,10 @@ export const PostCard = (thread: Thread) => {
                           className="w-1/2 h-1/2 object-contain rounded border"
                         />
                         <Button
-                          onClick={handleRemoveFile}
+                          onClick={() => {
+                            handleRemoveFile();
+                            setPreviewURL(null);
+                          }}
                           variant={"destructive"}
                           size={"icon"}
                           className="absolute top-10 left-2"
@@ -197,6 +196,7 @@ export const PostCard = (thread: Thread) => {
                       variant={"destructive"}
                       onClick={() => {
                         setIsEditing(false);
+                        setPreviewURL(null);
                         handleRemoveFile();
                       }}
                       className="text-xs"
@@ -206,22 +206,22 @@ export const PostCard = (thread: Thread) => {
                   </div>
                 </div>
               </div>
-            </form>
-          ) : (
-            <div className="flex flex-col gap-2">
-              <div onClick={onClickPost} className="cursor-pointer">
-                <p className="text-secondary-foreground hover:text-muted-foreground break-words">
-                  {thread.content}
-                </p>
+            ) : (
+              <div className="flex flex-col gap-2">
+                <div onClick={onClickPost} className="cursor-pointer">
+                  <p className="text-secondary-foreground hover:text-muted-foreground break-words">
+                    {thread.content}
+                  </p>
+                </div>
+                <div>
+                  <img
+                    src={thread.images}
+                    className="w-1/2 rounded object-contain"
+                  />
+                </div>
               </div>
-              <div>
-                <img
-                  src={thread.images}
-                  className="w-1/2 rounded object-contain"
-                />
-              </div>
-            </div>
-          )}
+            )}
+          </form>
           <div className="flex justify-between">
             {isEditing === false && (
               <div className="flex gap-4">
@@ -259,6 +259,7 @@ export const PostCard = (thread: Thread) => {
                     onClick={() => {
                       setIsEditing(true);
                       setPreviewURL(thread.images || null);
+                      handleFileChange;
                     }}
                     variant={"ghost"}
                     size={"sm"}

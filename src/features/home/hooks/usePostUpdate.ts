@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { isAxiosError } from "axios";
-import { useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { ThreadResponseDTO } from "../schemas/thread.dto";
@@ -33,21 +33,17 @@ export const usePostUpdate = (postId: string) => {
 
   const handleRemoveFile = () => {
     setPreviewURL(null);
-    inputRef.current!.value = "";
-  };
-
-  const handleDeleteImage = () => {
-    // registerImageRef.current!.value = "";
+    if (inputRef.current?.value) {
+      inputRef.current.value = "";
+    }
+    inputRef.current && (inputRef.current.value = "");
   };
 
   const onSubmitPost = async (data: UpdateThreadSchemaDTO) => {
     await mutateUpdate(data);
     setIsEditing(false);
-    reset();
     handleRemoveFile();
     navigate({ to: "/" });
-
-    console.log("Update Post Data: ", data); // log the post data
   };
 
   const {
@@ -85,6 +81,7 @@ export const usePostUpdate = (postId: string) => {
         formData
       );
 
+      console.log(response.data);
       return response.data;
     },
     onError: (error) => {
