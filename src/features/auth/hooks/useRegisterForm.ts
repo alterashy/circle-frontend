@@ -22,6 +22,12 @@ export const useRegisterForm = () => {
   const registerForm = useForm<RegisterSchemaDTO>({
     mode: "onChange",
     resolver: zodResolver(registerSchema),
+    defaultValues: {
+      fullName: "",
+      username: "",
+      email: "",
+      password: "",
+    },
   });
 
   const navigate = useNavigate();

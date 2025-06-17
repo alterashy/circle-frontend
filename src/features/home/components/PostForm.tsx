@@ -4,112 +4,36 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
-import { api } from "@/lib/api";
-import {
-  createThreadSchema,
-  CreateThreadSchemaDTO,
-} from "@/schemas/thread.schema";
 import { useAuthStore } from "@/stores/auth.store";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "@tanstack/react-router";
-import { isAxiosError } from "axios";
 import { ImagePlus, Send, XSquareIcon } from "lucide-react";
-import React, { useRef, useState } from "react";
-import { useForm } from "react-hook-form";
-import { toast } from "react-toastify";
-import { ThreadResponseDTO } from "../schemas/thread.dto";
+import { usePost } from "../hooks/usePost";
 
-type PostFormProps = {
-  onSuccess?: () => void;
-};
-
-export const PostForm = ({ onSuccess }: PostFormProps) => {
+export const PostForm = () => {
   const {
     user: {
       profile: { fullName, avatarUrl },
     },
   } = useAuthStore();
 
-  const inputRef = useRef<HTMLInputElement>(null);
-  const [previewURL, setPreviewURL] = useState<string | null>(null);
-
-  const handleInputFile = () => {
-    inputRef.current?.click();
-  };
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file && file.type.startsWith("image/")) {
-      const url = URL.createObjectURL(file);
-      setPreviewURL(url);
-    }
-  };
-
-  const handleRemoveFile = () => {
-    setPreviewURL(null);
-    inputRef.current!.value = "";
-  };
-
-  // handle post
-  const queryClient = useQueryClient();
   const {
+    inputRef,
+    previewURL,
+    handleInputFile,
+    handleFileChange,
+    handleRemoveFile,
+    onSubmitPost,
     register,
     handleSubmit,
-    reset,
-    // formState: { errors },
-  } = useForm<CreateThreadSchemaDTO>({
-    mode: "onSubmit",
-    resolver: zodResolver(createThreadSchema),
-  });
-
-  const {
-    ref: registerImageRef,
-    onChange: registerImageOnChange,
+    errors,
+    registerImageRef,
+    registerImageOnChange,
+    isPending,
     ...restRegisterImage
-  } = register("imageUrl");
-
-  const { isPending, mutateAsync } = useMutation<
-    ThreadResponseDTO,
-    Error,
-    CreateThreadSchemaDTO
-  >({
-    mutationKey: ["create-thread"],
-    mutationFn: async (data: CreateThreadSchemaDTO) => {
-      const formData = new FormData();
-      formData.append("content", data.content);
-      if (data.imageUrl) {
-        formData.append("images", data.imageUrl[0]);
-      }
-      const response = await api.post<ThreadResponseDTO>("/threads", formData);
-      return response.data;
-    },
-    onError: (error) => {
-      if (isAxiosError(error)) {
-        return toast.error(error.response?.data.message);
-      }
-      toast.error("Something went wrong!");
-    },
-    onSuccess: async (data) => {
-      await queryClient.invalidateQueries({
-        queryKey: ["threads"],
-      });
-      onSuccess?.();
-      toast.success(data.message);
-    },
-  });
-
-  const navigate = useNavigate();
-  const onSubmit = async (data: CreateThreadSchemaDTO) => {
-    await mutateAsync(data);
-    reset();
-    handleRemoveFile();
-    navigate({ to: "/" });
-  };
+  } = usePost({ onSuccess: () => {} });
 
   return (
     <div>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmitPost)}>
         <div className="flex flex-row gap-4">
           <Avatar>
             <AvatarImage
@@ -122,7 +46,7 @@ export const PostForm = ({ onSuccess }: PostFormProps) => {
           </Avatar>
           <Textarea
             {...register("content")}
-            placeholder="What's on your mind?"
+            placeholder={errors.content?.message || "What's on your mind?"}
           />
           <Input
             {...restRegisterImage}
@@ -144,8 +68,8 @@ export const PostForm = ({ onSuccess }: PostFormProps) => {
               {isPending ? <Spinner size={"small"} /> : <Send />}
             </Button>
             <Button
-              type="button"
               onClick={handleInputFile}
+              type="button"
               size={"icon"}
               variant={"outline"}
             >
@@ -155,8 +79,8 @@ export const PostForm = ({ onSuccess }: PostFormProps) => {
         </div>
         <div>
           {previewURL && (
-            <div className="relative inline-block">
-              <Separator className="my-2" />
+            <div className="relative inline-block ml-12">
+              <Separator className="my-4" />
               <img
                 src={previewURL}
                 alt="image preview"
@@ -166,7 +90,7 @@ export const PostForm = ({ onSuccess }: PostFormProps) => {
                 onClick={handleRemoveFile}
                 variant={"destructive"}
                 size={"icon"}
-                className="absolute top-6 left-2"
+                className="absolute top-10 left-2"
               >
                 <XSquareIcon />
               </Button>

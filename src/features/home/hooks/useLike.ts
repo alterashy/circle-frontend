@@ -31,6 +31,9 @@ export const useLike = () => {
 
   const handleLike = async (data: LikeDTO) => {
     await mutateLike(data);
+    queryClient.invalidateQueries({
+      queryKey: [`threads/${data.threadId}`],
+    });
   };
 
   const { isPending: isPendingUnlike, mutateAsync: mutateUnlike } = useMutation<
@@ -58,6 +61,9 @@ export const useLike = () => {
 
   const handleUnlike = async (data: UnlikeDTO) => {
     await mutateUnlike(data);
+    queryClient.invalidateQueries({
+      queryKey: [`threads/${data.threadId}`],
+    });
   };
 
   return {

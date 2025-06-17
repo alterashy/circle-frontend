@@ -11,4 +11,5 @@ export interface ThreadEntity {
   replies?: ReplyEntity[];
   createdAt: string;
   updatedAt: string;
+  isEdited: boolean;
 }

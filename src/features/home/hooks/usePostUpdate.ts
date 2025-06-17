@@ -1,7 +1,7 @@
 import { api } from "@/lib/api";
 import {
-  createThreadSchema,
-  CreateThreadSchemaDTO,
+  updateThreadSchema,
+  UpdateThreadSchemaDTO,
 } from "@/schemas/thread.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -12,15 +12,12 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { ThreadResponseDTO } from "../schemas/thread.dto";
 
-type PostFormProps = {
-  onSuccess?: () => void;
-};
-
-export const usePost = ({ onSuccess }: PostFormProps) => {
+export const usePostUpdate = (postId: string) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const inputRef = useRef<HTMLInputElement>(null);
   const [previewURL, setPreviewURL] = useState<string | null>(null);
+  const [isEditing, setIsEditing] = useState(false);
 
   const handleInputFile = () => {
     inputRef.current?.click();
@@ -39,11 +36,18 @@ export const usePost = ({ onSuccess }: PostFormProps) => {
     inputRef.current!.value = "";
   };
 
-  const onSubmitPost = async (data: CreateThreadSchemaDTO) => {
-    await mutateAsync(data);
+  const handleDeleteImage = () => {
+    // registerImageRef.current!.value = "";
+  };
+
+  const onSubmitPost = async (data: UpdateThreadSchemaDTO) => {
+    await mutateUpdate(data);
+    setIsEditing(false);
     reset();
     handleRemoveFile();
     navigate({ to: "/" });
+
+    console.log("Update Post Data: ", data); // log the post data
   };
 
   const {
@@ -51,9 +55,9 @@ export const usePost = ({ onSuccess }: PostFormProps) => {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<CreateThreadSchemaDTO>({
+  } = useForm<UpdateThreadSchemaDTO>({
     mode: "onSubmit",
-    resolver: zodResolver(createThreadSchema),
+    resolver: zodResolver(updateThreadSchema),
   });
 
   const {
@@ -62,20 +66,25 @@ export const usePost = ({ onSuccess }: PostFormProps) => {
     ...restRegisterImage
   } = register("imageUrl");
 
-  // Handle Post
-  const { isPending, mutateAsync } = useMutation<
+  const { isPending: isPendingUpdate, mutateAsync: mutateUpdate } = useMutation<
     ThreadResponseDTO,
     Error,
-    CreateThreadSchemaDTO
+    UpdateThreadSchemaDTO
   >({
-    mutationKey: ["create-thread"],
-    mutationFn: async (data: CreateThreadSchemaDTO) => {
+    mutationKey: ["update-thread"],
+    mutationFn: async (data: UpdateThreadSchemaDTO) => {
       const formData = new FormData();
       formData.append("content", data.content);
-      if (data.imageUrl) {
+
+      if (data.imageUrl && data.imageUrl.length > 0) {
         formData.append("images", data.imageUrl[0]);
       }
-      const response = await api.post<ThreadResponseDTO>("/threads", formData);
+
+      const response = await api.put<ThreadResponseDTO>(
+        `/threads/${postId}`,
+        formData
+      );
+
       return response.data;
     },
     onError: (error) => {
@@ -84,28 +93,32 @@ export const usePost = ({ onSuccess }: PostFormProps) => {
       }
       toast.error("Something went wrong!");
     },
-    onSuccess: async (data) => {
+    onSuccess: async () => {
       await queryClient.invalidateQueries({
         queryKey: ["threads"],
       });
-      onSuccess?.();
-      toast.success(data.message);
+      reset();
+      toast.success("Post updated successfully!");
     },
   });
 
   return {
+    register,
+    handleSubmit,
+    reset,
+    errors,
+    onSubmitPost,
+    isPendingUpdate,
     inputRef,
     previewURL,
+    setPreviewURL,
     handleInputFile,
     handleFileChange,
     handleRemoveFile,
-    onSubmitPost,
-    register,
-    handleSubmit,
-    errors,
     registerImageRef,
     registerImageOnChange,
-    isPending,
+    isEditing,
+    setIsEditing,
     ...restRegisterImage,
   };
 };

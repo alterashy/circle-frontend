@@ -27,6 +27,10 @@ export const useLoginForm = () => {
   const loginForm = useForm<LoginSchemaDTO>({
     mode: "onChange",
     resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
   });
 
   const { setUser } = useAuthStore();
