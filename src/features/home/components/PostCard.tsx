@@ -33,6 +33,12 @@ import { toast } from "react-toastify";
 import { useLike } from "../hooks/useLike";
 import { usePostUpdate } from "../hooks/usePostUpdate";
 import { Thread } from "../schemas/thread.types";
+import { allowEdit } from "@/utils/allowEdit";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export const PostCard = (thread: Thread) => {
   const currentUser = useAuthStore((state) => state.user);
@@ -255,19 +261,31 @@ export const PostCard = (thread: Thread) => {
             {isOwner && isEditing === false && (
               <div>
                 <div className="flex gap-2">
-                  <Button
-                    onClick={() => {
-                      setIsEditing(true);
-                      setPreviewURL(thread.images || null);
-                      handleFileChange;
-                    }}
-                    variant={"ghost"}
-                    size={"sm"}
-                  >
-                    <Edit3 size={14} />
-                    <span className="text-xs text-muted-foreground">Edit</span>
-                  </Button>
-
+                  {allowEdit(thread.createdAt) && (
+                    <Tooltip delayDuration={500}>
+                      <TooltipTrigger asChild>
+                        <Button
+                          onClick={() => {
+                            setIsEditing(true);
+                            setPreviewURL(thread.images || null);
+                            handleFileChange;
+                          }}
+                          variant={"ghost"}
+                          size={"sm"}
+                        >
+                          <Edit3 size={14} />
+                          <span className="text-xs text-muted-foreground">
+                            Edit
+                          </span>
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p className="text-xs">
+                          You can only edit within the first 6 hours
+                        </p>
+                      </TooltipContent>
+                    </Tooltip>
+                  )}
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
                       <Button type="button" variant={"ghost"} size={"sm"}>
