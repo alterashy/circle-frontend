@@ -1,15 +1,22 @@
-import { DumbWaysIcon, GithubIcon, InstagramIcon, LinkedinIcon } from "@/assets";
-import ProfileUser from "@/features/profile/components/ProfileUser";
+import {
+  DumbWaysIcon,
+  GithubIcon,
+  InstagramIcon,
+  LinkedinIcon,
+} from "@/assets";
+import { ProfileUser } from "@/features/profile/components/ProfileUser";
+import { useAuthStore } from "@/stores/auth.store";
 import { useLocation } from "@tanstack/react-router";
 
-const RightBar = () => {
+export const RightBar = () => {
+  const currentUser = useAuthStore((state) => state.user);
   const { pathname } = useLocation();
-  // const { username } = useAuthStore((state) => state.user);
 
   return (
     <div>
-      <div className="flex flex-col gap-4">
-        {pathname === "/profile" ? (
+      <div className="flex flex-col gap-4 w-full">
+        {pathname === `/profile` ||
+        pathname === `/profile/${currentUser?.username}` ? (
           <div className="hidden">
             <ProfileUser />
           </div>
@@ -37,7 +44,11 @@ const RightBar = () => {
           <span className="flex gap-1 text-xs text-muted-foreground items-center">
             Powered by
             <a href="https://dumbways.id/">
-              <img src={DumbWaysIcon} alt="dumbways.id" className="h-4 object-contain" />
+              <img
+                src={DumbWaysIcon}
+                alt="dumbways.id"
+                className="h-4 object-contain"
+              />
             </a>
             DumbWays Indonesia.
           </span>
@@ -46,5 +57,3 @@ const RightBar = () => {
     </div>
   );
 };
-
-export default RightBar;

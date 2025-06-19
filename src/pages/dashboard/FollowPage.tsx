@@ -1,11 +1,9 @@
-import FollowTab from "@/features/follow/components/FollowTab";
+import { FollowTab } from "@/features/follow/components/FollowTab";
 
-const FollowPage = () => {
+export const FollowPage = () => {
   return (
     <div>
       <FollowTab />
     </div>
   );
 };
-
-export default FollowPage;

@@ -1,17 +1,12 @@
-import LeftBar from "@/components/common/LeftBar";
-import RightBar from "@/components/common/RightBar";
+import { LeftBar } from "@/components/common/LeftBar";
+import { RightBar } from "@/components/common/RightBar";
 import { api } from "@/lib/api";
-import HomePage from "@/pages/dashboard/HomePage";
 import { useAuthStore } from "@/stores/auth.store";
 import { useQuery } from "@tanstack/react-query";
-import { createFileRoute, Navigate } from "@tanstack/react-router";
+import { Navigate, Outlet } from "@tanstack/react-router";
 import Cookies from "js-cookie";
 
-export const Route = createFileRoute("/")({
-  component: RouteComponent,
-});
-
-function RouteComponent() {
+export const DashboardLayout = () => {
   const {
     user: { username },
     setUser,
@@ -52,7 +47,7 @@ function RouteComponent() {
           <LeftBar />
         </div>
         <div className="lg:flex lg:flex-col lg:pt-8 lg:p-10 lg:border-l-1 lg:border-r-1 lg:overflow-y-auto">
-          <HomePage />
+          <Outlet />
         </div>
         <div className="lg:flex lg:flex-col lg:pt-8 lg:p-10">
           <RightBar />
@@ -60,4 +55,4 @@ function RouteComponent() {
       </div>
     );
   }
-}
+};

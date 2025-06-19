@@ -1,11 +1,9 @@
-import HomePage from "@/pages/dashboard/HomePage";
+import { HomePage } from "@/pages/dashboard/HomePage";
 
-const MainContent = () => {
+export const MainContent = () => {
   return (
     <div>
       <HomePage />
     </div>
   );
 };
-
-export default MainContent;

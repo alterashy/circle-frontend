@@ -1,17 +1,9 @@
-import { Separator } from "@/components/ui/separator";
-import SearchInput from "@/features/search/components/SearchInput";
-import SearchUserCard from "@/features/search/components/SearchUserCard";
+import { SearchInput } from "@/features/search/components/SearchInput";
 
-const SearchPage = () => {
+export const SearchPage = () => {
   return (
     <div>
       <SearchInput />
-      <Separator className="my-4" />
-      <div>
-        <SearchUserCard />
-      </div>
     </div>
   );
 };
-
-export default SearchPage;

@@ -1,14 +1,11 @@
 import { api } from "@/lib/api";
+import { registerSchema, RegisterSchemaDTO } from "@/schemas/auth.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { isAxiosError } from "axios";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import {
-  registerSchema,
-  type RegisterSchemaDTO,
-} from "../schemas/auth.schemas";
 
 interface RegisterFormResponse {
   message: string;
@@ -25,6 +22,12 @@ export const useRegisterForm = () => {
   const registerForm = useForm<RegisterSchemaDTO>({
     mode: "onChange",
     resolver: zodResolver(registerSchema),
+    defaultValues: {
+      fullName: "",
+      username: "",
+      email: "",
+      password: "",
+    },
   });
 
   const navigate = useNavigate();

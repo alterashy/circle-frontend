@@ -13,16 +13,16 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as dashboardRouteImport } from './routes/(dashboard)/route'
 import { Route as authRouteImport } from './routes/(auth)/route'
-import { Route as IndexImport } from './routes/index'
+import { Route as dashboardIndexImport } from './routes/(dashboard)/index'
 import { Route as dashboardSearchImport } from './routes/(dashboard)/search'
 import { Route as dashboardFollowImport } from './routes/(dashboard)/follow'
-import { Route as dashboardPostIdImport } from './routes/(dashboard)/$postId'
 import { Route as authResetPasswordImport } from './routes/(auth)/reset-password'
 import { Route as authRegisterImport } from './routes/(auth)/register'
 import { Route as authLoginImport } from './routes/(auth)/login'
 import { Route as authForgotPasswordImport } from './routes/(auth)/forgot-password'
 import { Route as dashboardProfileIndexImport } from './routes/(dashboard)/profile/index'
-import { Route as dashboardProfileProfileIdImport } from './routes/(dashboard)/profile/$profileId'
+import { Route as dashboardProfileUsernameImport } from './routes/(dashboard)/profile/$username'
+import { Route as dashboardPostPostIdImport } from './routes/(dashboard)/post/$postId'
 
 // Create/Update Routes
 
@@ -36,10 +36,10 @@ const authRouteRoute = authRouteImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const IndexRoute = IndexImport.update({
+const dashboardIndexRoute = dashboardIndexImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => dashboardRouteRoute,
 } as any)
 
 const dashboardSearchRoute = dashboardSearchImport.update({
@@ -51,12 +51,6 @@ const dashboardSearchRoute = dashboardSearchImport.update({
 const dashboardFollowRoute = dashboardFollowImport.update({
   id: '/follow',
   path: '/follow',
-  getParentRoute: () => dashboardRouteRoute,
-} as any)
-
-const dashboardPostIdRoute = dashboardPostIdImport.update({
-  id: '/$postId',
-  path: '/$postId',
   getParentRoute: () => dashboardRouteRoute,
 } as any)
 
@@ -90,9 +84,15 @@ const dashboardProfileIndexRoute = dashboardProfileIndexImport.update({
   getParentRoute: () => dashboardRouteRoute,
 } as any)
 
-const dashboardProfileProfileIdRoute = dashboardProfileProfileIdImport.update({
-  id: '/profile/$profileId',
-  path: '/profile/$profileId',
+const dashboardProfileUsernameRoute = dashboardProfileUsernameImport.update({
+  id: '/profile/$username',
+  path: '/profile/$username',
+  getParentRoute: () => dashboardRouteRoute,
+} as any)
+
+const dashboardPostPostIdRoute = dashboardPostPostIdImport.update({
+  id: '/post/$postId',
+  path: '/post/$postId',
   getParentRoute: () => dashboardRouteRoute,
 } as any)
 
@@ -100,13 +100,6 @@ const dashboardProfileProfileIdRoute = dashboardProfileProfileIdImport.update({
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexImport
-      parentRoute: typeof rootRoute
-    }
     '/(auth)': {
       id: '/(auth)'
       path: '/'
@@ -149,13 +142,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authResetPasswordImport
       parentRoute: typeof authRouteImport
     }
-    '/(dashboard)/$postId': {
-      id: '/(dashboard)/$postId'
-      path: '/$postId'
-      fullPath: '/$postId'
-      preLoaderRoute: typeof dashboardPostIdImport
-      parentRoute: typeof dashboardRouteImport
-    }
     '/(dashboard)/follow': {
       id: '/(dashboard)/follow'
       path: '/follow'
@@ -170,11 +156,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof dashboardSearchImport
       parentRoute: typeof dashboardRouteImport
     }
-    '/(dashboard)/profile/$profileId': {
-      id: '/(dashboard)/profile/$profileId'
-      path: '/profile/$profileId'
-      fullPath: '/profile/$profileId'
-      preLoaderRoute: typeof dashboardProfileProfileIdImport
+    '/(dashboard)/': {
+      id: '/(dashboard)/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof dashboardIndexImport
+      parentRoute: typeof dashboardRouteImport
+    }
+    '/(dashboard)/post/$postId': {
+      id: '/(dashboard)/post/$postId'
+      path: '/post/$postId'
+      fullPath: '/post/$postId'
+      preLoaderRoute: typeof dashboardPostPostIdImport
+      parentRoute: typeof dashboardRouteImport
+    }
+    '/(dashboard)/profile/$username': {
+      id: '/(dashboard)/profile/$username'
+      path: '/profile/$username'
+      fullPath: '/profile/$username'
+      preLoaderRoute: typeof dashboardProfileUsernameImport
       parentRoute: typeof dashboardRouteImport
     }
     '/(dashboard)/profile/': {
@@ -208,18 +208,20 @@ const authRouteRouteWithChildren = authRouteRoute._addFileChildren(
 )
 
 interface dashboardRouteRouteChildren {
-  dashboardPostIdRoute: typeof dashboardPostIdRoute
   dashboardFollowRoute: typeof dashboardFollowRoute
   dashboardSearchRoute: typeof dashboardSearchRoute
-  dashboardProfileProfileIdRoute: typeof dashboardProfileProfileIdRoute
+  dashboardIndexRoute: typeof dashboardIndexRoute
+  dashboardPostPostIdRoute: typeof dashboardPostPostIdRoute
+  dashboardProfileUsernameRoute: typeof dashboardProfileUsernameRoute
   dashboardProfileIndexRoute: typeof dashboardProfileIndexRoute
 }
 
 const dashboardRouteRouteChildren: dashboardRouteRouteChildren = {
-  dashboardPostIdRoute: dashboardPostIdRoute,
   dashboardFollowRoute: dashboardFollowRoute,
   dashboardSearchRoute: dashboardSearchRoute,
-  dashboardProfileProfileIdRoute: dashboardProfileProfileIdRoute,
+  dashboardIndexRoute: dashboardIndexRoute,
+  dashboardPostPostIdRoute: dashboardPostPostIdRoute,
+  dashboardProfileUsernameRoute: dashboardProfileUsernameRoute,
   dashboardProfileIndexRoute: dashboardProfileIndexRoute,
 }
 
@@ -228,44 +230,44 @@ const dashboardRouteRouteWithChildren = dashboardRouteRoute._addFileChildren(
 )
 
 export interface FileRoutesByFullPath {
-  '/': typeof dashboardRouteRouteWithChildren
+  '/': typeof dashboardIndexRoute
   '/forgot-password': typeof authForgotPasswordRoute
   '/login': typeof authLoginRoute
   '/register': typeof authRegisterRoute
   '/reset-password': typeof authResetPasswordRoute
-  '/$postId': typeof dashboardPostIdRoute
   '/follow': typeof dashboardFollowRoute
   '/search': typeof dashboardSearchRoute
-  '/profile/$profileId': typeof dashboardProfileProfileIdRoute
+  '/post/$postId': typeof dashboardPostPostIdRoute
+  '/profile/$username': typeof dashboardProfileUsernameRoute
   '/profile': typeof dashboardProfileIndexRoute
 }
 
 export interface FileRoutesByTo {
-  '/': typeof dashboardRouteRouteWithChildren
+  '/': typeof dashboardIndexRoute
   '/forgot-password': typeof authForgotPasswordRoute
   '/login': typeof authLoginRoute
   '/register': typeof authRegisterRoute
   '/reset-password': typeof authResetPasswordRoute
-  '/$postId': typeof dashboardPostIdRoute
   '/follow': typeof dashboardFollowRoute
   '/search': typeof dashboardSearchRoute
-  '/profile/$profileId': typeof dashboardProfileProfileIdRoute
+  '/post/$postId': typeof dashboardPostPostIdRoute
+  '/profile/$username': typeof dashboardProfileUsernameRoute
   '/profile': typeof dashboardProfileIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
-  '/': typeof IndexRoute
   '/(auth)': typeof authRouteRouteWithChildren
   '/(dashboard)': typeof dashboardRouteRouteWithChildren
   '/(auth)/forgot-password': typeof authForgotPasswordRoute
   '/(auth)/login': typeof authLoginRoute
   '/(auth)/register': typeof authRegisterRoute
   '/(auth)/reset-password': typeof authResetPasswordRoute
-  '/(dashboard)/$postId': typeof dashboardPostIdRoute
   '/(dashboard)/follow': typeof dashboardFollowRoute
   '/(dashboard)/search': typeof dashboardSearchRoute
-  '/(dashboard)/profile/$profileId': typeof dashboardProfileProfileIdRoute
+  '/(dashboard)/': typeof dashboardIndexRoute
+  '/(dashboard)/post/$postId': typeof dashboardPostPostIdRoute
+  '/(dashboard)/profile/$username': typeof dashboardProfileUsernameRoute
   '/(dashboard)/profile/': typeof dashboardProfileIndexRoute
 }
 
@@ -277,10 +279,10 @@ export interface FileRouteTypes {
     | '/login'
     | '/register'
     | '/reset-password'
-    | '/$postId'
     | '/follow'
     | '/search'
-    | '/profile/$profileId'
+    | '/post/$postId'
+    | '/profile/$username'
     | '/profile'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -289,36 +291,34 @@ export interface FileRouteTypes {
     | '/login'
     | '/register'
     | '/reset-password'
-    | '/$postId'
     | '/follow'
     | '/search'
-    | '/profile/$profileId'
+    | '/post/$postId'
+    | '/profile/$username'
     | '/profile'
   id:
     | '__root__'
-    | '/'
     | '/(auth)'
     | '/(dashboard)'
     | '/(auth)/forgot-password'
     | '/(auth)/login'
     | '/(auth)/register'
     | '/(auth)/reset-password'
-    | '/(dashboard)/$postId'
     | '/(dashboard)/follow'
     | '/(dashboard)/search'
-    | '/(dashboard)/profile/$profileId'
+    | '/(dashboard)/'
+    | '/(dashboard)/post/$postId'
+    | '/(dashboard)/profile/$username'
     | '/(dashboard)/profile/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
   authRouteRoute: typeof authRouteRouteWithChildren
   dashboardRouteRoute: typeof dashboardRouteRouteWithChildren
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
   authRouteRoute: authRouteRouteWithChildren,
   dashboardRouteRoute: dashboardRouteRouteWithChildren,
 }
@@ -333,13 +333,9 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/",
         "/(auth)",
         "/(dashboard)"
       ]
-    },
-    "/": {
-      "filePath": "index.tsx"
     },
     "/(auth)": {
       "filePath": "(auth)/route.tsx",
@@ -353,10 +349,11 @@ export const routeTree = rootRoute
     "/(dashboard)": {
       "filePath": "(dashboard)/route.tsx",
       "children": [
-        "/(dashboard)/$postId",
         "/(dashboard)/follow",
         "/(dashboard)/search",
-        "/(dashboard)/profile/$profileId",
+        "/(dashboard)/",
+        "/(dashboard)/post/$postId",
+        "/(dashboard)/profile/$username",
         "/(dashboard)/profile/"
       ]
     },
@@ -376,10 +373,6 @@ export const routeTree = rootRoute
       "filePath": "(auth)/reset-password.tsx",
       "parent": "/(auth)"
     },
-    "/(dashboard)/$postId": {
-      "filePath": "(dashboard)/$postId.tsx",
-      "parent": "/(dashboard)"
-    },
     "/(dashboard)/follow": {
       "filePath": "(dashboard)/follow.tsx",
       "parent": "/(dashboard)"
@@ -388,8 +381,16 @@ export const routeTree = rootRoute
       "filePath": "(dashboard)/search.tsx",
       "parent": "/(dashboard)"
     },
-    "/(dashboard)/profile/$profileId": {
-      "filePath": "(dashboard)/profile/$profileId.tsx",
+    "/(dashboard)/": {
+      "filePath": "(dashboard)/index.tsx",
+      "parent": "/(dashboard)"
+    },
+    "/(dashboard)/post/$postId": {
+      "filePath": "(dashboard)/post/$postId.tsx",
+      "parent": "/(dashboard)"
+    },
+    "/(dashboard)/profile/$username": {
+      "filePath": "(dashboard)/profile/$username.tsx",
       "parent": "/(dashboard)"
     },
     "/(dashboard)/profile/": {

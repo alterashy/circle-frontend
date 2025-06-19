@@ -1,12 +1,12 @@
-import LeftBar from "@/components/common/LeftBar";
-import RightBar from "@/components/common/RightBar";
+import { LeftBar } from "@/components/common/LeftBar";
+import { RightBar } from "@/components/common/RightBar";
 import { api } from "@/lib/api";
 import { useAuthStore } from "@/stores/auth.store";
 import { useQuery } from "@tanstack/react-query";
 import { Navigate, Outlet } from "@tanstack/react-router";
 import Cookies from "js-cookie";
 
-const DashboardLayout = () => {
+export const DashboardLayout = () => {
   const {
     user: { username },
     setUser,
@@ -42,19 +42,17 @@ const DashboardLayout = () => {
     if (!username) return <Navigate to="/login" />;
 
     return (
-      <div className="lg:grid lg:grid-cols-[240px_1fr_380px] lg:h-screen">
-        <div className="lg:flex lg:flex-col lg:pt-8 lg:p-10">
+      <div className="h-screen md:grid md:grid-cols-[0.5fr_3fr_0fr] lg:grid lg:grid-cols-[1fr_3fr_1.75fr] lg:h-screen">
+        <div className="p-4 hidden md:p-6 md:block">
           <LeftBar />
         </div>
-        <div className="lg:flex lg:flex-col lg:pt-8 lg:p-10 lg:border-l-1 lg:border-r-1 lg:overflow-y-auto">
+        <div className="p-4 overflow-y-scroll md:border md:border-border md:p-6 lg:border lg:border-border">
           <Outlet />
         </div>
-        <div className="lg:flex lg:flex-col lg:pt-8 lg:p-10">
+        <div className="p-4 hidden md:p-6 md:block">
           <RightBar />
         </div>
       </div>
     );
   }
 };
-
-export default DashboardLayout;

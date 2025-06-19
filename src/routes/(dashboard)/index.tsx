@@ -1,14 +1,14 @@
-import PostDetailPage from "@/pages/dashboard/PostDetailPage";
+import { HomePage } from "@/pages/dashboard/HomePage";
 import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/(dashboard)/$postId")({
+export const Route = createFileRoute("/(dashboard)/")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
   return (
     <div>
-      <PostDetailPage />
+      <HomePage />
     </div>
   );
 }

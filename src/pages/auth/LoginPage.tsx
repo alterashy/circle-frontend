@@ -1,12 +1,12 @@
-import { ModeToggle } from "@/components/common/ModeToggle";
-import LoginForm from "@/features/auth/components/LoginForm";
+import { ThemeToggle } from "@/components/common/ThemeToggle";
+import { LoginForm } from "@/features/auth/components/LoginForm";
 import { Link } from "@tanstack/react-router";
 
-const LoginPage = () => {
+export const LoginPage = () => {
   return (
     <div className="flex flex-col gap-4 items-center min-h-screen w-full p-15">
       <div className="absolute right-0 top-0 m-6">
-        <ModeToggle />
+        <ThemeToggle />
       </div>
       <div className="text-primary text-4xl text-left font-bold mb-2 w-1/3">
         Circle
@@ -26,5 +26,3 @@ const LoginPage = () => {
     </div>
   );
 };
-
-export default LoginPage;
