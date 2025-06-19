@@ -91,7 +91,7 @@ export const LeftBar = () => {
               <DialogHeader>
                 <DialogTitle className="mb-2">Create Post</DialogTitle>
                 <div className="w-full">
-                  <PostForm onSuccess={() => setOpen(false)} />
+                  <PostForm />
                 </div>
               </DialogHeader>
             </DialogContent>

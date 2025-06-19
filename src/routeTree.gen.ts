@@ -13,7 +13,7 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as dashboardRouteImport } from './routes/(dashboard)/route'
 import { Route as authRouteImport } from './routes/(auth)/route'
-import { Route as IndexImport } from './routes/index'
+import { Route as dashboardIndexImport } from './routes/(dashboard)/index'
 import { Route as dashboardSearchImport } from './routes/(dashboard)/search'
 import { Route as dashboardFollowImport } from './routes/(dashboard)/follow'
 import { Route as authResetPasswordImport } from './routes/(auth)/reset-password'
@@ -36,10 +36,10 @@ const authRouteRoute = authRouteImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const IndexRoute = IndexImport.update({
+const dashboardIndexRoute = dashboardIndexImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => dashboardRouteRoute,
 } as any)
 
 const dashboardSearchRoute = dashboardSearchImport.update({
@@ -100,13 +100,6 @@ const dashboardPostPostIdRoute = dashboardPostPostIdImport.update({
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexImport
-      parentRoute: typeof rootRoute
-    }
     '/(auth)': {
       id: '/(auth)'
       path: '/'
@@ -163,6 +156,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof dashboardSearchImport
       parentRoute: typeof dashboardRouteImport
     }
+    '/(dashboard)/': {
+      id: '/(dashboard)/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof dashboardIndexImport
+      parentRoute: typeof dashboardRouteImport
+    }
     '/(dashboard)/post/$postId': {
       id: '/(dashboard)/post/$postId'
       path: '/post/$postId'
@@ -210,6 +210,7 @@ const authRouteRouteWithChildren = authRouteRoute._addFileChildren(
 interface dashboardRouteRouteChildren {
   dashboardFollowRoute: typeof dashboardFollowRoute
   dashboardSearchRoute: typeof dashboardSearchRoute
+  dashboardIndexRoute: typeof dashboardIndexRoute
   dashboardPostPostIdRoute: typeof dashboardPostPostIdRoute
   dashboardProfileUsernameRoute: typeof dashboardProfileUsernameRoute
   dashboardProfileIndexRoute: typeof dashboardProfileIndexRoute
@@ -218,6 +219,7 @@ interface dashboardRouteRouteChildren {
 const dashboardRouteRouteChildren: dashboardRouteRouteChildren = {
   dashboardFollowRoute: dashboardFollowRoute,
   dashboardSearchRoute: dashboardSearchRoute,
+  dashboardIndexRoute: dashboardIndexRoute,
   dashboardPostPostIdRoute: dashboardPostPostIdRoute,
   dashboardProfileUsernameRoute: dashboardProfileUsernameRoute,
   dashboardProfileIndexRoute: dashboardProfileIndexRoute,
@@ -228,7 +230,7 @@ const dashboardRouteRouteWithChildren = dashboardRouteRoute._addFileChildren(
 )
 
 export interface FileRoutesByFullPath {
-  '/': typeof dashboardRouteRouteWithChildren
+  '/': typeof dashboardIndexRoute
   '/forgot-password': typeof authForgotPasswordRoute
   '/login': typeof authLoginRoute
   '/register': typeof authRegisterRoute
@@ -241,7 +243,7 @@ export interface FileRoutesByFullPath {
 }
 
 export interface FileRoutesByTo {
-  '/': typeof dashboardRouteRouteWithChildren
+  '/': typeof dashboardIndexRoute
   '/forgot-password': typeof authForgotPasswordRoute
   '/login': typeof authLoginRoute
   '/register': typeof authRegisterRoute
@@ -255,7 +257,6 @@ export interface FileRoutesByTo {
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
-  '/': typeof IndexRoute
   '/(auth)': typeof authRouteRouteWithChildren
   '/(dashboard)': typeof dashboardRouteRouteWithChildren
   '/(auth)/forgot-password': typeof authForgotPasswordRoute
@@ -264,6 +265,7 @@ export interface FileRoutesById {
   '/(auth)/reset-password': typeof authResetPasswordRoute
   '/(dashboard)/follow': typeof dashboardFollowRoute
   '/(dashboard)/search': typeof dashboardSearchRoute
+  '/(dashboard)/': typeof dashboardIndexRoute
   '/(dashboard)/post/$postId': typeof dashboardPostPostIdRoute
   '/(dashboard)/profile/$username': typeof dashboardProfileUsernameRoute
   '/(dashboard)/profile/': typeof dashboardProfileIndexRoute
@@ -296,7 +298,6 @@ export interface FileRouteTypes {
     | '/profile'
   id:
     | '__root__'
-    | '/'
     | '/(auth)'
     | '/(dashboard)'
     | '/(auth)/forgot-password'
@@ -305,6 +306,7 @@ export interface FileRouteTypes {
     | '/(auth)/reset-password'
     | '/(dashboard)/follow'
     | '/(dashboard)/search'
+    | '/(dashboard)/'
     | '/(dashboard)/post/$postId'
     | '/(dashboard)/profile/$username'
     | '/(dashboard)/profile/'
@@ -312,13 +314,11 @@ export interface FileRouteTypes {
 }
 
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
   authRouteRoute: typeof authRouteRouteWithChildren
   dashboardRouteRoute: typeof dashboardRouteRouteWithChildren
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
   authRouteRoute: authRouteRouteWithChildren,
   dashboardRouteRoute: dashboardRouteRouteWithChildren,
 }
@@ -333,13 +333,9 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/",
         "/(auth)",
         "/(dashboard)"
       ]
-    },
-    "/": {
-      "filePath": "index.tsx"
     },
     "/(auth)": {
       "filePath": "(auth)/route.tsx",
@@ -355,6 +351,7 @@ export const routeTree = rootRoute
       "children": [
         "/(dashboard)/follow",
         "/(dashboard)/search",
+        "/(dashboard)/",
         "/(dashboard)/post/$postId",
         "/(dashboard)/profile/$username",
         "/(dashboard)/profile/"
@@ -382,6 +379,10 @@ export const routeTree = rootRoute
     },
     "/(dashboard)/search": {
       "filePath": "(dashboard)/search.tsx",
+      "parent": "/(dashboard)"
+    },
+    "/(dashboard)/": {
+      "filePath": "(dashboard)/index.tsx",
       "parent": "/(dashboard)"
     },
     "/(dashboard)/post/$postId": {
