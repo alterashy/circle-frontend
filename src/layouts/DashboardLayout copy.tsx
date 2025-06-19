@@ -42,14 +42,14 @@ export const DashboardLayout = () => {
     if (!username) return <Navigate to="/login" />;
 
     return (
-      <div className="h-screen md:grid md:grid-cols-[0.5fr_3fr_0fr] lg:grid lg:grid-cols-[1fr_3fr_1.75fr] lg:h-screen">
-        <div className="p-4 hidden md:p-6 md:block">
+      <div className="lg:grid lg:grid-cols-[240px_1fr_380px] lg:h-screen">
+        <div className="lg:flex lg:flex-col lg:pt-8 lg:p-10">
           <LeftBar />
         </div>
-        <div className="p-4 overflow-y-scroll md:border md:border-border md:p-6 lg:border lg:border-border">
+        <div className="lg:flex lg:flex-col lg:pt-8 lg:p-10 lg:border-l-1 lg:border-r-1 lg:overflow-y-auto">
           <Outlet />
         </div>
-        <div className="p-4 hidden md:p-6 md:block">
+        <div className="lg:flex lg:flex-col lg:pt-8 lg:p-10">
           <RightBar />
         </div>
       </div>

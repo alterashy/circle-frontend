@@ -19,7 +19,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
-import { ThemeToggle } from "./ThemeToggle";
 
 const activeProps = {
   style: {
@@ -27,10 +26,10 @@ const activeProps = {
     color: "#00BC7D",
   },
 };
+
 export const LeftBar = () => {
   const { logout } = useAuthStore();
   const navigate = useNavigate();
-
   const handleLogout = () => {
     logout();
     Cookies.remove("token");
@@ -40,51 +39,51 @@ export const LeftBar = () => {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="flex flex-col justify-between w-full h-full">
-      <div className="flex flex-col gap-8">
-        <div>
+    <div className="flex flex-col justify-between h-full w-full">
+      <div className="flex flex-col gap-6">
+        <div className="md:hidden lg:block">
           <Link to="/" activeProps={activeProps}>
             <h1 className="font-bold text-3xl text-primary">Circle</h1>
           </Link>
         </div>
         <div>
           <Link to="/" activeProps={activeProps}>
-            <div className="flex gap-2">
+            <Button variant={"outline"} className="w-full">
               <House />
-              Home
-            </div>
+              <span className="md:hidden lg:block">Home</span>
+            </Button>
           </Link>
         </div>
         <div>
           <Link to="/search" activeProps={activeProps}>
-            <div className="flex gap-2">
+            <Button variant={"outline"} className="w-full">
               <UserRoundSearch />
-              Search
-            </div>
+              <span className="md:hidden lg:block">Search</span>
+            </Button>
           </Link>
         </div>
         <div>
           <Link to="/follow" activeProps={activeProps}>
-            <div className="flex gap-2">
+            <Button variant={"outline"} className="w-full">
               <UsersRound />
-              Follow
-            </div>
+              <span className="md:hidden lg:block">Follow</span>
+            </Button>
           </Link>
         </div>
-        <div>
+        <div className="w-full">
           <Link to="/profile" activeProps={activeProps}>
-            <div className="flex gap-2">
+            <Button variant={"outline"} className="w-full">
               <CircleUserRound />
-              Profile
-            </div>
+              <span className="md:hidden lg:block">Profile</span>
+            </Button>
           </Link>
         </div>
-        <div>
+        <div className="w-full">
           <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger className="w-full" asChild>
-              <Button className="w-full text-accent-foreground">
+            <DialogTrigger asChild className="w-full">
+              <Button size={"sm"} className="w-full text-accent-foreground">
                 <SquarePlus />
-                Create Post
+                <span className="md:hidden lg:block">Create Post</span>
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-lg w-full">
@@ -98,13 +97,16 @@ export const LeftBar = () => {
           </Dialog>
         </div>
       </div>
-      <div className="flex justify-between w-full">
-        <ThemeToggle />
-        <Button type="submit" onClick={handleLogout} variant={"outline"}>
-          <LogOut />
-          Logout
-        </Button>
-      </div>
+      <Button
+        type="submit"
+        onClick={handleLogout}
+        variant={"outline"}
+        size={"sm"}
+        className="w-full"
+      >
+        <LogOut />
+        <span className="md:hidden lg:block">Logout</span>
+      </Button>
     </div>
   );
 };

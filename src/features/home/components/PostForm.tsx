@@ -29,7 +29,7 @@ export const PostForm = () => {
     registerImageOnChange,
     isPending,
     ...restRegisterImage
-  } = usePost({ onSuccess: () => {} });
+  } = usePost();
 
   return (
     <div>

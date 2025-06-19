@@ -230,7 +230,7 @@ export const PostCard = (thread: Thread) => {
           </form>
           <div className="flex justify-between">
             {isEditing === false && (
-              <div className="flex gap-4">
+              <div className="flex gap-2">
                 <Button
                   variant={"ghost"}
                   size={"sm"}

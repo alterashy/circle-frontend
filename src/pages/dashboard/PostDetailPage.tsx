@@ -27,7 +27,7 @@ export const PostDetailPage = () => {
     <div>
       <div className="flex gap-2 items-center">
         <Link to="/">
-          <Button variant={"ghost"} size={"icon"}>
+          <Button variant={"ghost"} size={"sm"}>
             <ArrowLeft />
           </Button>
         </Link>

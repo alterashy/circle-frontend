@@ -14,7 +14,7 @@ export const RightBar = () => {
 
   return (
     <div>
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 w-full">
         {pathname === `/profile` ||
         pathname === `/profile/${currentUser?.username}` ? (
           <div className="hidden">

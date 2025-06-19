@@ -27,21 +27,18 @@ export const HomePage = () => {
 
   return (
     <div>
-      <div className="flex gap-2 items-center">
+      <div className="flex justify-between items-center w-full">
         <div>
           <Link to="/">
-            <Button variant={"ghost"} size={"icon"}>
-              <House />
+            <Button variant={"ghost"} size={"sm"}>
+              <span>Home</span>
             </Button>
           </Link>
         </div>
-        <div className="flex justify-between items-center w-full">
-          <h1 className="font-semibold">Post</h1>
-          <span className="flex gap-2 items-center text-muted-foreground text-xs">
-            <CalendarClock size={"14px"} />
-            {Date} WIB
-          </span>
-        </div>
+        <span className="flex gap-2 items-center text-muted-foreground text-xs">
+          <CalendarClock size={"14px"} />
+          {Date} WIB
+        </span>
       </div>
       <div>
         <Separator className="my-4" />
