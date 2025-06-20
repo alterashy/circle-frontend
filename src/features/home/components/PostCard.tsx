@@ -11,17 +11,31 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { api } from "@/lib/api";
 import { useAuthStore } from "@/stores/auth.store";
+import { allowEdit } from "@/utils/allowEdit";
 import TimeAgo from "@/utils/timeAgo";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { isAxiosError } from "axios";
 import {
+  Edit,
   Edit3,
+  Ellipsis,
   Heart,
   ImagePlus,
   MessageCircleMore,
@@ -33,12 +47,6 @@ import { toast } from "react-toastify";
 import { useLike } from "../hooks/useLike";
 import { usePostUpdate } from "../hooks/usePostUpdate";
 import { Thread } from "../schemas/thread.types";
-import { allowEdit } from "@/utils/allowEdit";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 
 export const PostCard = (thread: Thread) => {
   const currentUser = useAuthStore((state) => state.user);
@@ -114,6 +122,71 @@ export const PostCard = (thread: Thread) => {
               <span className="text-sm text-muted-foreground">
                 {thread.isEdited && <span>(edited)</span>}
               </span>
+            </div>
+            <div>
+              {isOwner && isEditing === false && (
+                <DropdownMenu>
+                  <DropdownMenuTrigger>
+                    <Button size={"icon"} variant={"ghost"}>
+                      <Ellipsis />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-fit ml-2 mr-2">
+                    {allowEdit(thread.createdAt) && (
+                      <DropdownMenuItem
+                        onClick={() => {
+                          setIsEditing(true);
+                          setPreviewURL(thread.images || null);
+                          handleFileChange;
+                        }}
+                        className="text-xs text-secondary-foreground cursor-pointer"
+                      >
+                        <Edit3 className="text-xs text-secondary-foreground" />
+                        <span className="text-xs font-semibold">Edit</span>
+                      </DropdownMenuItem>
+                    )}
+                    <DropdownMenuItem asChild>
+                      <AlertDialog>
+                        <AlertDialogTrigger>
+                          <Button type="button" variant={"ghost"} size={"sm"}>
+                            <Trash2 className="text-xs text-secondary-foreground" />
+                            <span className="text-xs text-secondary-foreground">
+                              Delete
+                            </span>
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>
+                              Are you absolutely sure?
+                            </AlertDialogTitle>
+                            <AlertDialogDescription>
+                              This action cannot be undone. This will
+                              permanently delete your Post.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel
+                              type="button"
+                              className="text-xs"
+                            >
+                              <span>Cancel</span>
+                            </AlertDialogCancel>
+                            <AlertDialogAction
+                              type="submit"
+                              onClick={() => handleDelete()}
+                              className="text-xs"
+                            >
+                              <Trash2 />
+                              <span>Delete</span>
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              )}
             </div>
           </div>
           <form onSubmit={handleSubmit(onSubmitPost)}>
@@ -256,77 +329,6 @@ export const PostCard = (thread: Thread) => {
                     {thread.repliesCount} Replies
                   </span>
                 </Button>
-              </div>
-            )}
-            {isOwner && isEditing === false && (
-              <div>
-                <div className="flex gap-2">
-                  {allowEdit(thread.createdAt) && (
-                    <Tooltip delayDuration={500}>
-                      <TooltipTrigger asChild>
-                        <Button
-                          onClick={() => {
-                            setIsEditing(true);
-                            setPreviewURL(thread.images || null);
-                            handleFileChange;
-                          }}
-                          variant={"ghost"}
-                          size={"sm"}
-                        >
-                          <Edit3 size={14} />
-                          <span className="text-xs text-muted-foreground">
-                            Edit
-                          </span>
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p className="text-xs">
-                          You can only edit within the first 6 hours
-                        </p>
-                      </TooltipContent>
-                    </Tooltip>
-                  )}
-                  <AlertDialog>
-                    <AlertDialogTrigger asChild>
-                      <Button type="button" variant={"ghost"} size={"sm"}>
-                        <Trash2 />
-                        <span className="text-xs text-muted-foreground">
-                          Delete
-                        </span>
-                      </Button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>
-                          Are you absolutely sure?
-                        </AlertDialogTitle>
-                        <AlertDialogDescription>
-                          This action cannot be undone. This will permanently
-                          delete your Post.
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel asChild>
-                          <span className="text-xs text-muted-foreground">
-                            Cancel
-                          </span>
-                        </AlertDialogCancel>
-                        <AlertDialogAction asChild>
-                          <Button
-                            type="submit"
-                            onClick={() => handleDelete()}
-                            variant={"destructive"}
-                            size={"sm"}
-                          >
-                            <span className="text-xs text-secondary-foreground">
-                              Delete
-                            </span>
-                          </Button>
-                        </AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
-                </div>
               </div>
             )}
           </div>
