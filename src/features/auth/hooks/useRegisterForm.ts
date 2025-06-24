@@ -52,7 +52,7 @@ export const useRegisterForm = () => {
       toast.error("Something went wrong!");
     },
     onSuccess: async (data) => {
-      toast.success(data.message, { autoClose: 1000 });
+      toast.success(data.message);
       navigate({ to: "/login" });
     },
   });

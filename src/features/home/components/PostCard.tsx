@@ -19,12 +19,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
+import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { api } from "@/lib/api";
 import { useAuthStore } from "@/stores/auth.store";
 import { allowEdit } from "@/utils/allowEdit";
@@ -33,7 +29,6 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { isAxiosError } from "axios";
 import {
-  Edit,
   Edit3,
   Ellipsis,
   Heart,
@@ -97,7 +92,10 @@ export const PostCard = (thread: Thread) => {
   return (
     <div>
       <div className="flex gap-4">
-        <Avatar className="hover:ring-1 hover:ring-offset-[2px] hover:ring-offset-background cursor-pointer">
+        <Avatar
+          onClick={() => navigate({ to: `/profile/${thread.user?.username}` })}
+          className="hover:ring-1 hover:ring-offset-[2px] hover:ring-offset-background cursor-pointer"
+        >
           <AvatarImage
             src={
               thread.user?.profile?.avatarUrl ||
@@ -112,21 +110,21 @@ export const PostCard = (thread: Thread) => {
               <span className="text-sm font-semibold">
                 {thread.user?.profile?.fullName}
               </span>
-              <span className="text-sm text-muted-foreground">
+              <span className="text-sm text-muted-foreground hidden md:block">
                 @{thread.user?.username}
               </span>
               <span className="text-sm text-muted-foreground">•</span>
-              <span className="text-sm text-muted-foreground">
+              <span className="text-xs text-muted-foreground">
                 <TimeAgo date={thread.createdAt} />
               </span>
-              <span className="text-sm text-muted-foreground">
+              <span className="text-xs text-muted-foreground">
                 {thread.isEdited && <span>(edited)</span>}
               </span>
             </div>
             <div>
               {isOwner && isEditing === false && (
                 <DropdownMenu>
-                  <DropdownMenuTrigger>
+                  <DropdownMenuTrigger asChild>
                     <Button size={"icon"} variant={"ghost"}>
                       <Ellipsis />
                     </Button>
@@ -147,7 +145,7 @@ export const PostCard = (thread: Thread) => {
                     )}
                     <DropdownMenuItem asChild>
                       <AlertDialog>
-                        <AlertDialogTrigger>
+                        <AlertDialogTrigger asChild>
                           <Button type="button" variant={"ghost"} size={"sm"}>
                             <Trash2 className="text-xs text-secondary-foreground" />
                             <span className="text-xs text-secondary-foreground">
@@ -227,7 +225,7 @@ export const PostCard = (thread: Thread) => {
                         <img
                           src={previewURL}
                           alt="image preview"
-                          className="w-1/2 h-1/2 object-contain rounded border"
+                          className="w-full object-contain rounded border md:w-1/2 md:h-1/2"
                         />
                         <Button
                           onClick={() => {
@@ -255,9 +253,11 @@ export const PostCard = (thread: Thread) => {
                   >
                     <ImagePlus className="text-primary" />
                     {previewURL ? (
-                      <span className="text-xs">Change Image</span>
+                      <span className="text-xs hidden md:block">
+                        Change Image
+                      </span>
                     ) : (
-                      <span className="text-xs">Add Image</span>
+                      <span className="text-xs hidden md:block">Add Image</span>
                     )}
                   </Button>
                   <div className="flex gap-2">
@@ -268,7 +268,7 @@ export const PostCard = (thread: Thread) => {
                       className="text-xs"
                       disabled={isPendingUpdate}
                     >
-                      {isPendingUpdate ? "Updating..." : "Update"}
+                      {isPendingUpdate ? <Spinner /> : "Update"}
                     </Button>
                     <Button
                       size="sm"
@@ -288,14 +288,14 @@ export const PostCard = (thread: Thread) => {
             ) : (
               <div className="flex flex-col gap-2">
                 <div onClick={onClickPost} className="cursor-pointer">
-                  <p className="text-secondary-foreground hover:text-muted-foreground break-words">
+                  <p className="text-secondary-foreground text-pretty hover:text-muted-foreground break-words">
                     {thread.content}
                   </p>
                 </div>
                 <div>
                   <img
                     src={thread.images}
-                    className="w-1/2 rounded object-contain"
+                    className="w-full md:w-1/2 rounded object-contain"
                   />
                 </div>
               </div>
@@ -325,8 +325,12 @@ export const PostCard = (thread: Thread) => {
                 </Button>
                 <Button variant={"ghost"} size={"sm"} onClick={onClickPost}>
                   <MessageCircleMore />
-                  <span className="text-sm text-muted-foreground">
-                    {thread.repliesCount} Replies
+                  <span className="text-xs text-muted-foreground">
+                    {thread.repliesCount > 1 ? (
+                      <div>{thread.repliesCount} Replies</div>
+                    ) : (
+                      <div>{thread.repliesCount} Reply</div>
+                    )}
                   </span>
                 </Button>
               </div>

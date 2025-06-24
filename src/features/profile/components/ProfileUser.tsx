@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { api } from "@/lib/api";
 import { useAuthStore } from "@/stores/auth.store";
-import { Separator } from "@radix-ui/react-separator";
 import { useQuery } from "@tanstack/react-query";
 import { useLocation } from "@tanstack/react-router";
 import { UserRoundPen } from "lucide-react";

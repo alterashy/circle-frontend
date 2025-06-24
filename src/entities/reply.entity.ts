@@ -8,4 +8,5 @@ export interface ReplyEntity {
   user?: UserEntity;
   createdAt: string;
   updatedAt: string;
+  isEdited: boolean;
 }

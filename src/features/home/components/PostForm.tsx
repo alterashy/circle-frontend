@@ -34,7 +34,7 @@ export const PostForm = () => {
   return (
     <div>
       <form onSubmit={handleSubmit(onSubmitPost)}>
-        <div className="flex flex-row gap-4">
+        <div className="flex gap-4">
           <Avatar>
             <AvatarImage
               src={
@@ -46,7 +46,7 @@ export const PostForm = () => {
           </Avatar>
           <Textarea
             {...register("content")}
-            placeholder={errors.content?.message || "What's on your mind?"}
+            placeholder="What's on your mind?"
           />
           <Input
             {...restRegisterImage}
@@ -77,6 +77,13 @@ export const PostForm = () => {
             </Button>
           </div>
         </div>
+        <div className="flex items-center justify-between ml-12 mt-4">
+          {errors.content && (
+            <p className="text-xs text-muted-foreground">
+              {errors.content.message}
+            </p>
+          )}
+        </div>
         <div>
           {previewURL && (
             <div className="relative inline-block ml-12">
@@ -84,7 +91,7 @@ export const PostForm = () => {
               <img
                 src={previewURL}
                 alt="image preview"
-                className="w-1/2 h-1/2 object-contain rounded border"
+                className="w-full object-contain rounded border md:w-1/2 md:h-1/2"
               />
               <Button
                 onClick={handleRemoveFile}

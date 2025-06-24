@@ -2,12 +2,14 @@ import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { SearchUser } from "../schemas/search.schema";
 import { useNavigate } from "@tanstack/react-router";
+import { useAuthStore } from "@/stores/auth.store";
 
 type searchUserCardProps = {
   searchUserData: SearchUser;
 };
 
 export const SearchUserCard = ({ searchUserData }: searchUserCardProps) => {
+  const currentUser = useAuthStore((state) => state.user);
   const navigate = useNavigate();
   return (
     <div>
@@ -42,9 +44,11 @@ export const SearchUserCard = ({ searchUserData }: searchUserCardProps) => {
           </div>
         </div>
         <div>
-          <Button variant={"outline"} size={"sm"}>
-            <span className="text-xs">Follow</span>
-          </Button>
+          {searchUserData.username !== currentUser?.username && (
+            <Button variant={"outline"} size={"sm"}>
+              <span className="text-xs">Follow</span>
+            </Button>
+          )}
         </div>
       </div>
     </div>

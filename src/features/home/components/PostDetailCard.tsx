@@ -15,8 +15,8 @@ export const PostDetailCard = (thread: Thread) => {
     <div>
       <div className="flex gap-4 items-center w-full">
         <Avatar
-          className="hover:ring-1 hover:ring-offset-[2px] hover:ring-offset-background cursor-pointer"
           onClick={() => navigate({ to: `/profile/${thread.user?.username}` })}
+          className="hover:ring-1 hover:ring-offset-[2px] hover:ring-offset-background cursor-pointer"
         >
           <AvatarImage
             src={
@@ -45,7 +45,7 @@ export const PostDetailCard = (thread: Thread) => {
         <div>
           <img
             src={thread.images}
-            className="w-1/2 rounded object-contain my-2"
+            className="w-full md:w-1/2 rounded object-contain"
           />
         </div>
         <div className="flex gap-2 items-center mb-2 text-xs text-muted-foreground">
@@ -74,8 +74,12 @@ export const PostDetailCard = (thread: Thread) => {
           </Button>
           <Button variant={"ghost"} size={"sm"}>
             <MessageCircleMore />
-            <span className="text-sm text-muted-foreground">
-              {thread.repliesCount} Replies
+            <span className="text-xs text-muted-foreground">
+              {thread.repliesCount > 1 ? (
+                <div>{thread.repliesCount} Replies</div>
+              ) : (
+                <div>{thread.repliesCount} Reply</div>
+              )}
             </span>
           </Button>
         </div>

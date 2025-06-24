@@ -39,7 +39,7 @@ const TimeAgo: React.FC<TimeAgoProps> = ({ date }) => {
     return () => clearInterval(interval);
   }, [date]);
 
-  return <span className="text-muted-foreground">{timeAgo} ago</span>;
+  return <span className="text-muted-foreground">{timeAgo}</span>;
 };
 
 export default TimeAgo;

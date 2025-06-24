@@ -57,7 +57,7 @@ export const useLoginForm = () => {
       toast.error("Something Went wrong!");
     },
     onSuccess: async (data) => {
-      toast.success(data.message, { autoClose: 1000 });
+      toast.success(data.message);
       navigate({ to: "/" });
     },
   });

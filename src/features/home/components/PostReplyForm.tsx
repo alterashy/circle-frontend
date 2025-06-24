@@ -1,6 +1,7 @@
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 // import { Input } from "@/components/ui/input";
+import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
 import { api } from "@/lib/api";
 import {
@@ -13,13 +14,10 @@ import { Separator } from "@radix-ui/react-separator";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useParams } from "@tanstack/react-router";
 import { isAxiosError } from "axios";
-// import { ImagePlus, Send, XSquareIcon } from "lucide-react";
-// import { useRef, useState } from "react";
+import { Send } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { ReplyResponseDTO } from "../schemas/reply.dto";
-import { Spinner } from "@/components/ui/spinner";
-import { Send } from "lucide-react";
 
 export const PostReplyForm = () => {
   const { postId } = useParams({ from: "/(dashboard)/post/$postId" });
@@ -29,43 +27,17 @@ export const PostReplyForm = () => {
     },
   } = useAuthStore();
 
-  // const inputRef = useRef<HTMLInputElement>(null);
-  // const [previewURL, setPreviewURL] = useState<string | null>(null);
-
-  // const handleInputFile = () => {
-  //   inputRef.current?.click();
-  // };
-
-  // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const file = e.target.files?.[0];
-  //   if (file && file.type.startsWith("image/")) {
-  //     const url = URL.createObjectURL(file);
-  //     setPreviewURL(url);
-  //   }
-  // };
-
-  // const handleRemoveFile = () => {
-  //   setPreviewURL(null);
-  //   inputRef.current!.value = "";
-  // };
-
   const queryClient = useQueryClient();
 
   const {
     register,
     handleSubmit,
-    // formState: { errors },
+    formState: { errors },
     reset,
   } = useForm<CreateReplySchemaDTO>({
     mode: "onChange",
     resolver: zodResolver(createReplySchema),
   });
-
-  // const {
-  //   ref: registerImageRef,
-  //   onChange: registerImageOnChange,
-  //   ...restRegisterImage
-  // } = register("content");
 
   const { isPending, mutateAsync } = useMutation<
     ReplyResponseDTO,
@@ -88,7 +60,7 @@ export const PostReplyForm = () => {
     },
     onSuccess: async (data) => {
       await queryClient.invalidateQueries({ queryKey: [`threads/${postId}`] });
-      toast.success(data.message, { autoClose: 1000 });
+      toast.success(data.message);
       console.log(data);
       reset({ content: "" });
     },
@@ -122,55 +94,17 @@ export const PostReplyForm = () => {
             {...register("content")}
             placeholder="Share your thoughts..."
           />
-          {/* <Input
-            {...restRegisterImage}
-            id="picture"
-            type="file"
-            accept="image/*"
-            ref={(e) => {
-              registerImageRef(e);
-              inputRef.current = e;
-            }}
-            onChange={(e) => {
-              registerImageOnChange(e);
-              handleFileChange(e);
-            }}
-            className="hidden"
-          /> */}
-          <div className="flex flex-col gap-3">
-            <Button type="submit" size={"icon"}>
-              {isPending ? <Spinner size={"small"} /> : <Send />}
-            </Button>
-            {/* <Button
-              type="button"
-              onClick={handleInputFile}
-              size={"icon"}
-              variant={"outline"}
-            >
-              <ImagePlus className="text-primary" />
-            </Button> */}
-          </div>
+          <Button type="submit" size={"icon"}>
+            {isPending ? <Spinner size={"small"} /> : <Send />}
+          </Button>
         </div>
-        {/* <div>
-          {previewURL && (
-            <div className="relative inline-block">
-              <Separator className="my-2" />
-              <img
-                src={previewURL}
-                alt="image preview"
-                className="w-1/2 h-1/2 object-contain rounded border"
-              />
-              <Button
-                onClick={handleRemoveFile}
-                variant={"destructive"}
-                size={"icon"}
-                className="absolute top-6 left-2"
-              >
-                <XSquareIcon />
-              </Button>
-            </div>
+        <div className="ml-12 mt-4">
+          {errors.content && (
+            <p className="text-xs text-muted-foreground">
+              {errors.content.message}
+            </p>
           )}
-        </div> */}
+        </div>
         <Separator className="my-4" />
       </form>
     </div>
