@@ -25,9 +25,9 @@ export const RightBar = () => {
             <ProfileUser />
           </div>
         )}
-        <div className="flex flex-col gap-1.5 w-full p-4 rounded bg-secondary text-xs">
-          Follow Suggestion
-        </div>
+        {/* <div className="flex flex-col gap-1.5 w-full p-4 rounded bg-secondary text-xs">
+          <SuggestedCard />
+        </div> */}
         <div className="flex flex-col gap-2 w-full p-4 rounded bg-secondary text-xs">
           <span className="flex gap-1 text-xs items-center">
             Developed by Syifa Maulaya •

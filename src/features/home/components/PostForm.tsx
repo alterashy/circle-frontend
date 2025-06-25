@@ -8,7 +8,11 @@ import { useAuthStore } from "@/stores/auth.store";
 import { ImagePlus, Send, XSquareIcon } from "lucide-react";
 import { usePost } from "../hooks/usePost";
 
-export const PostForm = () => {
+type PostFormProps = {
+  onCloseDialog: () => void;
+};
+
+export const PostForm = ({ onCloseDialog }: PostFormProps) => {
   const {
     user: {
       profile: { fullName, avatarUrl },
@@ -29,7 +33,7 @@ export const PostForm = () => {
     registerImageOnChange,
     isPending,
     ...restRegisterImage
-  } = usePost();
+  } = usePost(onCloseDialog);
 
   return (
     <div>

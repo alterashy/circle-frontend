@@ -8,22 +8,21 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
-import { Link } from "@tanstack/react-router";
+import { ResetPasswordSchemaDTO } from "@/schemas/auth.schema";
 import { type Control, type FieldPath } from "react-hook-form";
-import { useLoginForm } from "../hooks/useLoginForm";
-import { LoginSchemaDTO } from "@/schemas/auth.schema";
+import { useResetPasswordForm } from "../hooks/useResetPasswordForm";
 
-export const LoginForm = () => {
-  const { loginForm, isPending, onSubmit } = useLoginForm();
+export const ResetPasswordForm = () => {
+  const { resetPasswordForm, isPending, onSubmit } = useResetPasswordForm();
 
-  interface LoginFormFieldProps {
-    name: FieldPath<LoginSchemaDTO>;
+  interface ResetPasswordFormFieldProps {
+    name: FieldPath<ResetPasswordSchemaDTO>;
     placeholder: string;
     inputType?: string;
-    formControl: Control<LoginSchemaDTO, any>;
+    formControl: Control<ResetPasswordSchemaDTO, any>;
   }
 
-  const LoginFormField: React.FC<LoginFormFieldProps> = ({
+  const ResetPasswordFormField: React.FC<ResetPasswordFormFieldProps> = ({
     name,
     placeholder,
     inputType,
@@ -53,28 +52,29 @@ export const LoginForm = () => {
 
   return (
     <div>
-      <Form {...loginForm}>
-        <form onSubmit={loginForm.handleSubmit(onSubmit)} className="space-y-4">
-          <LoginFormField
-            name="email"
-            placeholder="email"
-            inputType="email"
-            formControl={loginForm.control}
-          />
-          <LoginFormField
-            name="password"
-            placeholder="password"
+      <Form {...resetPasswordForm}>
+        <form
+          onSubmit={resetPasswordForm.handleSubmit(onSubmit)}
+          className="space-y-4"
+        >
+          <ResetPasswordFormField
+            name="oldPassword"
+            placeholder="Old Password"
             inputType="password"
-            formControl={loginForm.control}
+            formControl={resetPasswordForm.control}
           />
-          <div className="text-sm text-right mt-4">
-            <Link
-              to="/forgot-password"
-              className="text-foreground hover:text-primary"
-            >
-              Forgot Password?
-            </Link>
-          </div>
+          <ResetPasswordFormField
+            name="newPassword"
+            placeholder="New Password"
+            inputType="password"
+            formControl={resetPasswordForm.control}
+          />
+          <ResetPasswordFormField
+            name="newPasswordConfirm"
+            placeholder="Confirm New Password"
+            inputType="password"
+            formControl={resetPasswordForm.control}
+          />
           <Button type="submit" className="w-full text-foreground">
             {isPending ? (
               <span className="flex gap-2 items-center">
@@ -82,7 +82,7 @@ export const LoginForm = () => {
                 Loading...
               </span>
             ) : (
-              <span>Login</span>
+              <span>Create New Password</span>
             )}
           </Button>
         </form>

@@ -12,7 +12,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { ThreadResponseDTO } from "../schemas/thread.dto";
 
-export const usePost = () => {
+export const usePost = (onSuccess?: () => void) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -84,6 +84,7 @@ export const usePost = () => {
       await queryClient.invalidateQueries({
         queryKey: ["threads"],
       });
+      onSuccess?.();
       toast.success(data.message);
     },
   });

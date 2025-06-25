@@ -8,22 +8,21 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
-import { Link } from "@tanstack/react-router";
+import { ForgotPasswordSchemaDTO } from "@/schemas/auth.schema";
 import { type Control, type FieldPath } from "react-hook-form";
-import { useLoginForm } from "../hooks/useLoginForm";
-import { LoginSchemaDTO } from "@/schemas/auth.schema";
+import { useForgotPasswordForm } from "../hooks/useForgotPasswordForm";
 
-export const LoginForm = () => {
-  const { loginForm, isPending, onSubmit } = useLoginForm();
+export const ForgotPasswordForm = () => {
+  const { forgotPasswordForm, isPending, onSubmit } = useForgotPasswordForm();
 
-  interface LoginFormFieldProps {
-    name: FieldPath<LoginSchemaDTO>;
+  interface ForgotPasswordFormFieldProps {
+    name: FieldPath<ForgotPasswordSchemaDTO>;
     placeholder: string;
     inputType?: string;
-    formControl: Control<LoginSchemaDTO, any>;
+    formControl: Control<ForgotPasswordSchemaDTO, any>;
   }
 
-  const LoginFormField: React.FC<LoginFormFieldProps> = ({
+  const ForgotPasswordFormField: React.FC<ForgotPasswordFormFieldProps> = ({
     name,
     placeholder,
     inputType,
@@ -53,28 +52,17 @@ export const LoginForm = () => {
 
   return (
     <div>
-      <Form {...loginForm}>
-        <form onSubmit={loginForm.handleSubmit(onSubmit)} className="space-y-4">
-          <LoginFormField
+      <Form {...forgotPasswordForm}>
+        <form
+          onSubmit={forgotPasswordForm.handleSubmit(onSubmit)}
+          className="space-y-4"
+        >
+          <ForgotPasswordFormField
             name="email"
             placeholder="email"
             inputType="email"
-            formControl={loginForm.control}
+            formControl={forgotPasswordForm.control}
           />
-          <LoginFormField
-            name="password"
-            placeholder="password"
-            inputType="password"
-            formControl={loginForm.control}
-          />
-          <div className="text-sm text-right mt-4">
-            <Link
-              to="/forgot-password"
-              className="text-foreground hover:text-primary"
-            >
-              Forgot Password?
-            </Link>
-          </div>
           <Button type="submit" className="w-full text-foreground">
             {isPending ? (
               <span className="flex gap-2 items-center">
@@ -82,7 +70,7 @@ export const LoginForm = () => {
                 Loading...
               </span>
             ) : (
-              <span>Login</span>
+              <span>Send Instruction</span>
             )}
           </Button>
         </form>

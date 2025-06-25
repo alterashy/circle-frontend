@@ -90,7 +90,7 @@ export const LeftBar = () => {
               <DialogHeader>
                 <DialogTitle className="mb-2">Create Post</DialogTitle>
                 <div className="w-full">
-                  <PostForm />
+                  <PostForm onCloseDialog={() => setOpen(false)} />
                 </div>
               </DialogHeader>
             </DialogContent>

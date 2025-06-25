@@ -11,7 +11,7 @@ import React, { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
-export const useProfileUpdate = () => {
+export const useProfileUpdate = (onSuccess?: () => void) => {
   const currentUser = useAuthStore((state) => state.user);
   const queryClient = useQueryClient();
 
@@ -91,6 +91,7 @@ export const useProfileUpdate = () => {
       await queryClient.invalidateQueries({
         queryKey: ["users", currentUser.username],
       });
+      onSuccess?.();
       toast.success("Profile updated successfully!");
     },
   });

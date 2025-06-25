@@ -16,7 +16,13 @@ import { useAuthStore } from "@/stores/auth.store";
 import { useQuery } from "@tanstack/react-query";
 import { useProfileUpdate } from "../hooks/useProfileUpdate";
 
-export const ProfileEditDialog = () => {
+type ProfileEditDialogProps = {
+  onCloseDialog: () => void;
+};
+
+export const ProfileEditDialog = ({
+  onCloseDialog,
+}: ProfileEditDialogProps) => {
   const currentUser = useAuthStore((state) => state.user);
 
   const { data: userProfile } = useQuery({
@@ -47,7 +53,7 @@ export const ProfileEditDialog = () => {
     // isPending,
     handleSubmit,
     onSubmitUpdate,
-  } = useProfileUpdate();
+  } = useProfileUpdate(onCloseDialog);
 
   return (
     <DialogContent className="sm:max-w-md">

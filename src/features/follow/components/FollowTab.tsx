@@ -41,9 +41,9 @@ export const FollowTab = () => {
           {isLoadingFollowings ? (
             <Spinner />
           ) : (
-            followings?.map((follower) => (
-              <div key={follower.id}>
-                <FollowingUserCard FollowUser={follower} />
+            followings?.map((following) => (
+              <div key={following.id}>
+                <FollowingUserCard FollowUser={following} />
               </div>
             ))
           )}

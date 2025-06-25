@@ -8,10 +8,13 @@ import { useQuery } from "@tanstack/react-query";
 import { useLocation } from "@tanstack/react-router";
 import { UserRoundPen } from "lucide-react";
 import { ProfileEditDialog } from "./ProfileEditDialog";
+import { useState } from "react";
 
 export const ProfileUser = () => {
   const currentUser = useAuthStore((state) => state.user);
   const { pathname } = useLocation();
+
+  const [open, setOpen] = useState(false);
 
   const {
     data: userProfile,
@@ -62,7 +65,7 @@ export const ProfileUser = () => {
                   />
                 </Avatar>
               </div>
-              <Dialog>
+              <Dialog open={open} onOpenChange={setOpen}>
                 <DialogTrigger asChild>
                   {pathname === `/profile` ||
                   pathname === `/profile/${currentUser?.username}` ? (
@@ -83,7 +86,7 @@ export const ProfileUser = () => {
                     </Button>
                   )}
                 </DialogTrigger>
-                <ProfileEditDialog />
+                <ProfileEditDialog onCloseDialog={() => setOpen(false)} />
               </Dialog>
             </div>
           </div>
@@ -94,9 +97,9 @@ export const ProfileUser = () => {
             </span>
             <span className="flex text-xs">{userProfile?.profile?.bio}</span>
             <div className="flex flex-row gap-1 items-baseline">
-              <span className="text-xs">{userProfile?.followers.length}</span>
-              <span className="text-gray-600 text-xs">Followers</span>
               <span className="text-xs">{userProfile?.followings.length}</span>
+              <span className="text-gray-600 text-xs">Followers</span>
+              <span className="text-xs">{userProfile?.followers.length}</span>
               <span className="text-gray-600 text-xs">Followings</span>
             </div>
           </div>

@@ -7,7 +7,8 @@ import { api } from "@/lib/api";
 import { currentDate } from "@/utils/currentDateTime";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
-import { CalendarClock, House } from "lucide-react";
+import { CalendarClock } from "lucide-react";
+import { useState } from "react";
 
 export const HomePage = () => {
   const {
@@ -23,6 +24,7 @@ export const HomePage = () => {
     },
   });
 
+  const [open, setOpen] = useState(false);
   const Date = currentDate();
 
   return (
@@ -42,7 +44,7 @@ export const HomePage = () => {
       </div>
       <div>
         <Separator className="my-4" />
-        <PostForm />
+        <PostForm onCloseDialog={() => setOpen(false)} />
         <Separator className="my-4" />
       </div>
       <div>
